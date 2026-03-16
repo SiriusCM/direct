@@ -7,7 +7,7 @@ import './assets/styles.css'
 axios.defaults.withCredentials = true
 
 if (import.meta.env.PROD) {
-    axios.defaults.baseURL = 'http://127.0.0.1:8000/'
+    axios.defaults.baseURL = 'https://gcsng.jr.jd.com/wjzgTest/'
 } else {
     axios.defaults.baseURL = ''
 }
