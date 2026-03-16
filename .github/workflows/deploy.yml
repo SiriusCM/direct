@@ -52,6 +52,11 @@ jobs:
         env:
           VITE_BASE_PATH: ${{ env.base_path }}
 
+      - name: Copy .nojekyll to subdir
+        run: |
+          mkdir -p ./dist/${{ env.dest_dir }}
+          cp .nojekyll ./dist/${{ env.dest_dir }}/ || true
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
