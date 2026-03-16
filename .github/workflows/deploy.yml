@@ -52,11 +52,6 @@ jobs:
         env:
           VITE_BASE_PATH: ${{ env.base_path }}
 
-      - name: Copy .nojekyll to subdir
-        run: |
-          mkdir -p ./dist/${{ env.dest_dir }}
-          cp .nojekyll ./dist/${{ env.dest_dir }}/ || true
-
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -64,6 +59,7 @@ jobs:
           publish_dir: ./dist
           destination_dir: ${{ env.dest_dir }}
           keep_files: true  # 👈 关键！保留其他分支的文件，否则 main 会覆盖 feat，或反之
+          enable_nojekyll: true
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
           commit_message: 'Deploy ${{ env.branch_name }}: ${{ github.sha }}'
