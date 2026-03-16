@@ -1,7 +1,8 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
-const basePath = process.env.VITE_BASE_PATH || './'
+const isCI = !!process.env.GITHUB_ACTIONS;
+const basePath = process.env.VITE_BASE_PATH || (isCI ? '/direct/' : './');
 
 export default defineConfig({
   base: basePath,
