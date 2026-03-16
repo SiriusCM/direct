@@ -2,7 +2,9 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+      - 'feat-*'
 
 jobs:
   deploy:
@@ -18,11 +20,24 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # 👇 动态设置 Base Path
+      - name: Set Base Path
+        run: |
+          if [ "${{ github.ref_name }}" = "main" ]; then
+            echo "VITE_BASE_PATH=/direct/" >> $GITHUB_ENV
+          else
+            echo "VITE_BASE_PATH=/direct/${{ github.ref_name }}/" >> $GITHUB_ENV
+          fi
+
       - name: Build
         run: npm run build
+        env:
+          VITE_BASE_PATH: ${{ env.VITE_BASE_PATH }}
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
+          # main 分支部署到根目录，其他分支部署到子目录
+          destination_dir: ${{ github.ref_name == 'main' && '' || github.ref_name }}
